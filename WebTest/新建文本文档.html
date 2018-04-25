@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Page Title</title>
+    </head>
+    <body>
+	<script>
+		function main(){
+    function partical(color,x,y,vx,vy){
+        this.color =color;
+        this.x=x;
+        this.y=y;
+        this.vx=vx;
+        this.vy=vy;
+        this.r=5;
+	this.getv=function(mx,my){
+		a1x=(Math.random()*6-3) -this.vx*0.03
+		a1y=(Math.random()*6-3) -this.vy*0.03
+		delta=Math.sqrt(Math.pow((my-this.y),2),Math.pow((mx-this.x),2))+1)
+		if (delta<20){this.vx+=Math.log(10,delta/20)*50+a1x;
+			this.vy+=Math.log(10,delta/20)+a1y;}
+		if (delta>20){this.vx+=(mx-this.x)*0.01+a1x;
+			this.vy+=(mx-this.y)*0.01+a1y;}
+		
+		}
+        this.move=function(mx,my){
+            this.x+=this.vx;
+            this.y+=this.vy;
+            if (this.x>c. width ||this.x<0){
+               this.vx=-this.vx 
+            }
+            if (this.y>c. height ||this.y<0){
+               this.vy=-this.vy
+            }
+		this.getv(mx,my)
+            //this.vx+=(mx-this.x)*0.01+ (Math.random()*6-3) -this.vx*0.03//Math.log(10,(mx-this.x)*40)
+            //this.vy+=(my-this.y)*0.01+ (Math.random()*6-3) -this.vy*0.03//(my-this.y)*0.01
+            this.r=10/(Math.sqrt(Math.pow((my-this.y)*0.01,2),Math.pow((mx-this.x)*0.01,2))+1)*0.1+this.r*0.8
+        }
+    }
+    var c=document.getElementById ("myCanvas");
+    var n=66
+    var cxt=c.getContext ("2d"); 
+    function res(){
+    c.width =document.body.clientWidth-4//window.innerWidth-10 ;
+    c.height=window.innerHeight-4//document.body.clientHeight; 
+    cxt.fillRect(0,0,c.width,c.height);}
+    window.resize=res
+    res()
+    var pars = new Array();
+    for (i=0; i<=n; i++) {
+        var par=new partical("#"+Math.floor(Math.random()*16777215).toString(16),Math.random()*c.width, Math.random()*c.height, Math.random(), Math.random())
+        pars[i]=par
+        //console.log(par)
+    }
+    //console.log(pars[0])
+    var movex=c.width/2;
+    var movey=c.height/2;//用来接受鼠标位置的全局变量 
+    function mousemove(e) { 
+        e=e || window.event; 
+        if(e.pageX || e.pageY) { 
+            movex=e.pageX;
+            movey=e.pageY } }
+            document.onmousemove= mousemove;
+    function update(){
+    //cxt.clearRect(0,0,c.width, c.height)
+   //cxt.fillStyle = "#000000";
+    cxt.clearRect(0,0,c.width,c.height);
+    //console.log(movex, movey)
+    for (i=0; i<=n; i++) {
+        
+        par=pars[i]
+        par.move(movex,movey)//(c.width/2, c.height/2)
+        cxt.beginPath();
+      cxt.fillStyle = par.color
+      cxt.arc(par.x,par.y,par.r,0, Math.PI*2,true);
+      cxt.closePath(); 
+      cxt.fill(); 
+    }}
+    setInterval(update,50);
+}
+window.onload=function(){
+    main();
+}</script>	
+        
+        <canvas id="myCanvas" width="300" height="300"></canvas>
+	<style>body{
+		padding:0px;
+		margin:0px;
+		background-image:url(img.jpg);
+		background-size:cover;
+		}</style>
+	<!--<style>.me{
+            font-family: Florence, cursive;
+            font-size:25px;
+ 
+            text-shadow: 5px 2px 4px grey;}</style>
+        <p class="me">Interact with it by touching!</p>
+        <p>PS:Could anyone tell me how to make the canvas fullscreen?</p>--!>
+    </body>
+</html>

@@ -1,0 +1,2 @@
+digitalclock.pyw
+exit
