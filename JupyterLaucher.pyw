@@ -10,7 +10,7 @@ if hwnd:
           out=win32gui.ShowWindow(hwnd,win32con.SW_SHOWNORMAL)
 else:
      #pass
-     chdir(r'C:\Users\Administrator\Desktop\Scripts\2048S')
+     chdir(r'C:\Users\Administrator\Desktop\Scripts')
      system('start jupyter-notebook')
      time.sleep(5)
      hwnd=win32gui.FindWindow('ConsoleWindowClass',None)
