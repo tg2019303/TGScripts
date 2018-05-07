@@ -1,3 +1,5 @@
+from __future__ import print_function
+from builtins import input
 import random
 
 RANGE=list('123456789')
@@ -5,8 +7,10 @@ CHANCE=10
 SEQ=4
 MSG='Welcome to the number guessing game.\nCurrent setting of the game is %d chances for you to guess a %d digits.'%(CHANCE,SEQ)
 MSG2='Invalid input!'
-print('\033[5;33m%s\033[0m'%MSG)
+print('\033[5;33m%s\033[1;37m'%MSG)
 def isvalid(num):
+    if num==list('exit'):
+        exit()
     for i in num:
         if not i in RANGE:
             return False
@@ -28,7 +32,7 @@ def main():
     for i in range(CHANCE):
         unum=list(input('num: '))
         while not isvalid(unum):
-            print('\033[1;35m%s\033[0m'%MSG2)
+            print('\033[1;35m%s\033[1;37m'%MSG2)
             unum=list(input('num: '))
         a,b=judge(cnum,unum)
         print('  ',a,'A',b,'B',sep='',end='   ')
