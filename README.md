@@ -7,3 +7,9 @@ To call system kill command by `os.popen` to kill programs like `QQMusic.exe` , 
 To lauch an pygame made GUI program to login the FTP system in the school. As you see, it's open source and donnot require any money to buy, unlike any other distribution in TG. Feel free to edit its looking.
 ## qwert.pyw
 A useful tool to manage the desktop files. when you select the file and drag them onto the link on the desktop (that is, `pythonw.exe qwert.pyw`) it will automaticly move them into the desktop directory and in the directory named after date of the Monday of the week. What's more, it uses the `SHFileOperation` which makes it looks just like what you use in the `explorer.exe`. And for historical reasons, its name was pretty confusing as `qwert.pyw`.
+## JupyterLaucher.pyw
+Lauch the `jupyter notebook` and hide the console using `win32gui` if it is not running, or show the console window if running.
+## website.txt
+Store some useful websites ever encountered.
+## num_guess.py
+A number guessing game. When a number is in the randomly generated number called `cnum`, but isn't in the right place, it add up as B. If is in the right place, they add up as A. Your goal is to reach 4A0B, which means you get the totally correct number.
