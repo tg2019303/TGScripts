@@ -13,3 +13,18 @@ Lauch the `jupyter notebook` and hide the console using `win32gui` if it is not 
 Store some useful websites ever encountered.
 ## num_guess.py
 A number guessing game. When a number is in the randomly generated number called `cnum`, but isn't in the right place, it add up as B. If is in the right place, they add up as A. Your goal is to reach 4A0B, which means you get the totally correct number.
+## net.py
+A simple script made by sjl to switch the net mode in the command line.
+## JupyterNotes/
+Contains several jupyter notebooks which involves tests of `matplotlib`, `sympy`, etc.
+## PygameStuff/
+#### derection.py
+A wrapper of direction control in pygame.
+#### EventSpyer.py
+To see what event happend using pygame's event system.
+## Tests/
+Contains several python language tests , tests of `PyQt5` ,and `pyplot`.
+## WebTests/
+Some tests with HTML , JS and CSS.
+## tyb/
+Several tests made bt tyb.
