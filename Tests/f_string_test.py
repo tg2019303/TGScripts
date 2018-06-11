@@ -8,10 +8,14 @@ class F:
         if s=='d':
             return f'x:{int(self.x)},y:{int(self.y)}'
         else:
-            print(s)
+            #print(s)
             return f'x:{self.x:{s}},y:{self.y:{s}}'
+    def __repr__(self):
+        return str(self)+',surprise!'
 
 f=F(1.1,5.8)
 print(f'{f}')
+print(f'{f!r}')
 print(f'{f:d}')
 print(f'{f:.2f}')
+print(f'{f:010.2f}')
