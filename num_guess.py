@@ -9,7 +9,8 @@ MSG='Welcome to the number guessing game.\nCurrent setting of the game is %d cha
 MSG2='Invalid input!'
 print('\033[5;33m%s\033[1;37m'%MSG)
 def isvalid(num):
-    if num==list('exit'):
+    if num==list('exit') or num==['q']:
+        print('Let me tell you, it\'s '+''.join(cnum))
         exit()
     for i in num:
         if not i in RANGE:
@@ -28,6 +29,7 @@ def judge(c,u):
             b+=1
     return a,b-a
 def main():
+    global cnum
     cnum=random.sample(RANGE,k=SEQ)
     for i in range(CHANCE):
         unum=list(input('num: '))

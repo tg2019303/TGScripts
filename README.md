@@ -27,4 +27,4 @@ Contains several python language tests , tests of `PyQt5` ,and `pyplot`.
 ## WebTests/
 Some tests with HTML , JS and CSS.
 ## tyb/
-Several tests made bt tyb.
+Several tests made by tyb.
