@@ -34,17 +34,17 @@ def launch(name):
         popen('start explorer ftp://6.163.193.243')
     pygame.quit()
 def main():
+    environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(startx,starty)
+    DIS=pygame.display.set_mode((3*size,3*size),NOFRAME)
     hwnd=FindWindow(None,'oh-my-ftp')
     if hwnd:
         pygame.quit()
         return
-    environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(startx,starty)
-    #DIS=pygame.display.set_mode((1,1),NOFRAME)
     pygame.display.set_caption('oh-my-ftp')
     #hwnd=win32gui.FindWindow(None,'oh-my-ftp')
     #a,b,c,d=win32gui.GetWindowRect(hwnd)
     #win32gui.SetWindowPos(hwnd,win32con.HWND_TOPMOST,startx,starty,3*size,3*size,win32con.SWP_NOSIZE)
-    DIS=pygame.display.set_mode((3*size,3*size),NOFRAME)
+    #DIS=pygame.display.set_mode((3*size,3*size),NOFRAME)
     for i in range(3):
         for j in range(3):
             pygame.draw.rect(DIS,(9,68,134,10),(i*size,j*size,size,size))
