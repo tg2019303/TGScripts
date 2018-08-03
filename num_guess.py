@@ -1,6 +1,11 @@
 from __future__ import print_function
 from builtins import input
 import random
+try:
+    import colorama
+    colorama.init()
+except ImportError:
+    pass
 
 RANGE=list('123456789')
 CHANCE=10
