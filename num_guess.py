@@ -1,13 +1,17 @@
 from __future__ import print_function
 from builtins import input
 import random
-
+try:
+    import colorama
+    colorama.init()
+except ImportError:
+    pass
 RANGE=list('123456789')
 CHANCE=10
 SEQ=4
 MSG='Welcome to the number guessing game.\nCurrent setting of the game is %d chances for you to guess a %d digits.'%(CHANCE,SEQ)
 MSG2='Invalid input!'
-print('\033[5;33m%s\033[1;37m'%MSG)
+print('\033[5;33m%s\033[1;34m'%MSG)
 def isvalid(num):
     if num==list('exit') or num==['q']:
         print('Let me tell you, it\'s '+''.join(cnum))
