@@ -6,6 +6,7 @@ from win32gui import FindWindow
 #pygame.init()
 size=75
 startx,starty=0,500
+name_pas={}
 name_dict={(0,0):'zm',
            (0,1):'cjun',
            (0,2):'xmh',
@@ -13,7 +14,7 @@ name_dict={(0,0):'zm',
            (1,1):'zjx',
            (1,2):'ysh',
            (2,0):'zjp',
-           (2,1):'sxm',
+           (2,1):'cj',
            }
 show_dict={(0,0):'语文',
            (0,1):'数学',
@@ -22,29 +23,37 @@ show_dict={(0,0):'语文',
            (1,1):'化学',
            (1,2):'地理杨',
            (2,0):'地理周',
-           (2,1):'美术',
+           (2,1):'历史',
            }
+def pas(name):
+    try:
+        password=pas_dict[name]
+        return password
+    except:
+        pass
 def get_grid(x,y):
     print(x,y)
     return(y//size,x//size)
-def launch(name):
+def launch(name,password='123'):
+    name1=name+':'+password
+    #print(name1)
     if name!='':
-        popen('start explorer ftp://%s:123@6.163.193.243'%name)
+        popen('start explorer ftp://%s@6.163.193.243'%name1)
     else:
         popen('start explorer ftp://6.163.193.243')
     pygame.quit()
 def main():
+    environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(startx,starty)
+    DIS=pygame.display.set_mode((3*size,3*size),NOFRAME)
     hwnd=FindWindow(None,'oh-my-ftp')
     if hwnd:
         pygame.quit()
         return
-    environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(startx,starty)
-    #DIS=pygame.display.set_mode((1,1),NOFRAME)
     pygame.display.set_caption('oh-my-ftp')
     #hwnd=win32gui.FindWindow(None,'oh-my-ftp')
     #a,b,c,d=win32gui.GetWindowRect(hwnd)
     #win32gui.SetWindowPos(hwnd,win32con.HWND_TOPMOST,startx,starty,3*size,3*size,win32con.SWP_NOSIZE)
-    DIS=pygame.display.set_mode((3*size,3*size),NOFRAME)
+    #DIS=pygame.display.set_mode((3*size,3*size),NOFRAME)
     for i in range(3):
         for j in range(3):
             pygame.draw.rect(DIS,(9,68,134,10),(i*size,j*size,size,size))
@@ -85,7 +94,7 @@ def main():
                     #print(event.key)
                     num=event.key-49
                     name=(name_dict.get((num//3,num%3),''))
-                    launch(name)
+                    launch(name,pas(name))
                     return
         pygame.time.wait(100)
 if  __name__ =='__main__':
