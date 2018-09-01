@@ -6,7 +6,7 @@ from win32gui import FindWindow
 #pygame.init()
 size=75
 startx,starty=0,500
-name_pas={}
+pas_dict={}
 name_dict={(0,0):'zm',
            (0,1):'cjun',
            (0,2):'xmh',
@@ -25,22 +25,12 @@ show_dict={(0,0):'语文',
            (2,0):'地理周',
            (2,1):'历史',
            }
-def pas(name):
-    try:
-        password=pas_dict[name]
-        return password
-    except:
-        pass
 def get_grid(x,y):
     print(x,y)
     return(y//size,x//size)
-def launch(name,password='123'):
-    name1=name+':'+password
-    #print(name1)
-    if name!='':
-        popen('start explorer ftp://%s@6.163.193.243'%name1)
-    else:
-        popen('start explorer ftp://6.163.193.243')
+def launch(name):
+    name1=name+':'+pas_dict.get(name,'123')+'@' if name else ''
+    popen('start explorer ftp://%s6.163.193.243'%name1)
     pygame.quit()
 def main():
     environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(startx,starty)
@@ -94,7 +84,7 @@ def main():
                     #print(event.key)
                     num=event.key-49
                     name=(name_dict.get((num//3,num%3),''))
-                    launch(name,pas(name))
+                    launch(name)
                     return
         pygame.time.wait(100)
 if  __name__ =='__main__':
