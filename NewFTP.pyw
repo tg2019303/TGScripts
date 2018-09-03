@@ -7,27 +7,11 @@ from win32gui import FindWindow
 size=75
 startx,starty=0,500
 pas_dict={}
-name_dict={(0,0):'zm',
-           (0,1):'cjun',
-           (0,2):'xmh',
-           (1,0):'zxs',
-           (1,1):'zjx',
-           (1,2):'ysh',
-           (2,0):'zjp',
-           (2,1):'cj',
-           }
-show_dict={(0,0):'语文',
-           (0,1):'数学',
-           (0,2):'英语',
-           (1,0):'物理',
-           (1,1):'化学',
-           (1,2):'地理杨',
-           (2,0):'地理周',
-           (2,1):'历史',
-           }
-def get_grid(x,y):
+usrs=['zm','cjun','xmh','zxs','zjx','ysh','zjp','cj','']
+names=['语文','数学','英语','物理','化学','地理杨','地理周','历史','']
+def get_grid_num(x,y):
     print(x,y)
-    return(y//size,x//size)
+    return((y//size)*3+x//size)
 def launch(name):
     name1=name+':'+pas_dict.get(name,'123')+'@' if name else ''
     popen('start explorer ftp://%s6.163.193.243'%name1)
@@ -55,7 +39,7 @@ def main():
 ##    FontObj.set_italic(True)
     for i in range(3):
         for j in range(3):
-            name=show_dict.get((i,j),'')
+            name=names[i*3+j]
             #print(name)
             txt=FontObj.render(name,True,(255,255,255))
             rect=txt.get_rect()
@@ -70,7 +54,7 @@ def main():
     while True:
         for event in pygame.event.get():
             if event.type==MOUSEBUTTONDOWN and event.button==1:
-                name=(name_dict.get(get_grid(*event.pos),''))
+                name=usrs[get_grid_num(*event.pos)]
                 launch(name)
                 return
             if event.type==QUIT:
@@ -83,7 +67,7 @@ def main():
                 elif 49<=event.key<=57:
                     #print(event.key)
                     num=event.key-49
-                    name=(name_dict.get((num//3,num%3),''))
+                    name=(usrs[num])
                     launch(name)
                     return
         pygame.time.wait(100)
