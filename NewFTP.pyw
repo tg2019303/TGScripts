@@ -6,9 +6,22 @@ from win32gui import FindWindow
 #pygame.init()
 size=75
 startx,starty=0,500
-pas_dict={}
-usrs=['zm','cjun','xmh','zxs','zjx','ysh','zjp','cj','']
-names=['语文','数学','英语','物理','化学','地理杨','地理周','历史','']
+pas_dict={'zzx':'1234'}
+class NameManager:
+    usrs=['zm','cjun','xmh','zxs','zjx','ysh','zjp','cj','zzx']
+    names=['语文','数学','英语','物理','化学','地理杨','地理周','历史','钟志兴']
+    page=0
+    maxpage=len(usrs)//8+1
+    def get_usr(self,i):
+        num=self.page*8+i
+        return self.usrs[num] if num<len(self.usrs) else ''
+    def get_name(self,i):
+        num=self.page*8+i
+        return self.names[num] if num<len(self.names) else ''
+    def pagedown(self):
+        self.page=min(self.maxpage,self.page+1)
+    def pageup(self):
+        self.page=max(0,self.page-1)
 def get_grid_num(x,y):
     print(x,y)
     return((y//size)*3+x//size)
@@ -28,35 +41,43 @@ def main():
     #a,b,c,d=win32gui.GetWindowRect(hwnd)
     #win32gui.SetWindowPos(hwnd,win32con.HWND_TOPMOST,startx,starty,3*size,3*size,win32con.SWP_NOSIZE)
     #DIS=pygame.display.set_mode((3*size,3*size),NOFRAME)
+    BGSurf=pygame.surface.Surface((3*size,3*size))
     for i in range(3):
         for j in range(3):
-            pygame.draw.rect(DIS,(9,68,134,10),(i*size,j*size,size,size))
-            pygame.draw.rect(DIS,(13,140,235,10),(i*size,j*size,size,size),10)
-    pygame.display.update()
-    pygame.font.init()
-##    FontObj=pygame.font.Font('simhei.ttf',20)
-    FontObj=pygame.font.SysFont('stliti',24)
-##    FontObj.set_italic(True)
-    for i in range(3):
-        for j in range(3):
-            name=names[i*3+j]
-            #print(name)
-            txt=FontObj.render(name,True,(255,255,255))
-            rect=txt.get_rect()
-            rect.center=(j*size+size/2,i*size+size/2)
-            #print(rect)
-            DIS.blit(txt,rect)
+            pygame.draw.rect(BGSurf,(9,68,134,10),(i*size,j*size,size,size))
+            pygame.draw.rect(BGSurf,(13,140,235,10),(i*size,j*size,size,size),10)
     BG=pygame.image.load('bg.jpg')
     BG=pygame.transform.scale(BG,(3*size,3*size))
     BG.set_alpha(45)
-    DIS.blit(BG,(0,0))        
-    pygame.display.update()
+    BGSurf.blit(BG,(0,0))        
+    pygame.font.init()
+    FontObj=pygame.font.SysFont('stliti',24)
+    mgr=NameManager()
+##    FontObj.set_italic(True)
+    def draw_text():
+        DIS.blit(BGSurf,(0,0))
+        for n in range(8):
+            i,j=n//3,n%3
+            name=mgr.get_name(n)
+            txt=FontObj.render(name,True,(255,255,255))
+            rect=txt.get_rect()
+            rect.center=(j*size+size/2,i*size+size/2)
+            DIS.blit(txt,rect)
+        pygame.display.update()
+    draw_text()
     while True:
         for event in pygame.event.get():
-            if event.type==MOUSEBUTTONDOWN and event.button==1:
-                name=usrs[get_grid_num(*event.pos)]
-                launch(name)
-                return
+            if event.type==MOUSEBUTTONDOWN:
+                if event.button==1:
+                    name=mgr.get_usr(get_grid_num(*event.pos))
+                    launch(name)
+                    return
+                elif event.button==5:
+                    mgr.pagedown()
+                    draw_text()
+                elif event.button==4:
+                    mgr.pageup()
+                    draw_text()
             if event.type==QUIT:
                 pygame.quit()
                 return
@@ -65,11 +86,17 @@ def main():
                     pygame.quit()
                     return
                 elif 49<=event.key<=57:
-                    #print(event.key)
                     num=event.key-49
-                    name=(usrs[num])
+                    name=(mgr.get_usr(num))
                     launch(name)
                     return
+                elif event.key==280:
+                    mgr.pageup()
+                    draw_text()
+                elif event.key==281:
+                    mgr.pagedown()
+                    draw_text()
+
         pygame.time.wait(100)
 if  __name__ =='__main__':
     main()
