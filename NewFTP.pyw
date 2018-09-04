@@ -11,7 +11,7 @@ class NameManager:
     usrs=['zm','cjun','xmh','zxs','zjx','ysh','zjp','cj','zzx']
     names=['语文','数学','英语','物理','化学','地理杨','地理周','历史','钟志兴']
     page=0
-    maxpage=len(usrs)//8+1
+    maxpage=len(usrs)//8
     def get_usr(self,i):
         num=self.page*8+i
         return self.usrs[num] if num<len(self.usrs) else ''
@@ -67,7 +67,7 @@ def main():
     draw_text()
     while True:
         for event in pygame.event.get():
-            if event.type==MOUSEBUTTONDOWN:
+            if event.type==MOUSEBUTTONUP:
                 if event.button==1:
                     name=mgr.get_usr(get_grid_num(*event.pos))
                     launch(name)
