@@ -6,6 +6,7 @@ try:
     colorama.init()
 except ImportError:
     pass
+
 RANGE=list('123456789')
 CHANCE=10
 SEQ=4
