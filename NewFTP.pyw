@@ -14,9 +14,13 @@ class NameManager:
     maxpage=len(usrs)//8
     def get_usr(self,i):
         num=self.page*8+i
+        if not 0<=i<=7:
+            return ''
         return self.usrs[num] if num<len(self.usrs) else ''
     def get_name(self,i):
         num=self.page*8+i
+        if not 0<=i<=7:
+            return ''
         return self.names[num] if num<len(self.names) else ''
     def pagedown(self):
         self.page=min(self.maxpage,self.page+1)
@@ -97,6 +101,6 @@ def main():
                     mgr.pagedown()
                     draw_text()
 
-        pygame.time.wait(100)
+        pygame.time.wait(20)
 if  __name__ =='__main__':
     main()
