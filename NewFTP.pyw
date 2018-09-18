@@ -2,9 +2,11 @@ import pygame
 from pygame.locals import *
 from os import popen,environ
 from win32gui import FindWindow
+import direction
 #import win32gui,win32con
 #pygame.init()
 size=75
+size2=20
 startx,starty=0,500
 pas_dict={'zzx':'1234'}
 class NameManager:
@@ -32,10 +34,11 @@ def get_grid_num(x,y):
 def launch(name):
     name1=name+':'+pas_dict.get(name,'123')+'@' if name else ''
     popen('start explorer ftp://%s6.163.193.243'%name1)
-    pygame.quit()
+    #pygame.quit()
 def main():
     environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(startx,starty)
     DIS=pygame.display.set_mode((3*size,3*size),NOFRAME)
+    MINI=False
     hwnd=FindWindow(None,'oh-my-ftp')
     if hwnd:
         pygame.quit()
@@ -69,19 +72,57 @@ def main():
             DIS.blit(txt,rect)
         pygame.display.update()
     draw_text()
+    def mini():
+        environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(0,5*size)
+        pygame.display.set_mode((size2,size2),NOFRAME)
+        
+        pygame.draw.rect(DIS,(9,68,134,10),(0,0,size2,size2))
+        pygame.draw.rect(DIS,(13,140,235,10),(0,0,size2,size2),4)
+        pygame.display.update()
     while True:
         for event in pygame.event.get():
+            if event.type==MOUSEBUTTONDOWN:
+                if event.button==1:
+                    start_pos=event.pos
             if event.type==MOUSEBUTTONUP:
                 if event.button==1:
-                    name=mgr.get_usr(get_grid_num(*event.pos))
-                    launch(name)
-                    return
+                    if MINI==True:
+                        environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(startx,starty)
+                        DIS=pygame.display.set_mode((3*size,3*size),NOFRAME)
+                        draw_text()
+                        MINI=False
+                    else:
+                        x,y=direction.get_mouse_direction(start_pos,event.pos)
+                        if y==1:
+                            mgr.pageup()
+                            draw_text()
+                        elif y==-1:
+                            mgr.pagedown()
+                            draw_text()
+                        elif x==-1 and MINI==False:
+                            MINI=True
+                            #x,y=startx,starty
+                            mini()
+                        else:
+                            name=mgr.get_usr(get_grid_num(*event.pos))
+                            launch(name)
+                            MINI=True
+                            mini()
+                            #return
+                        
                 elif event.button==5:
                     mgr.pagedown()
                     draw_text()
                 elif event.button==4:
                     mgr.pageup()
                     draw_text()
+##            if event.type==MOUSEMOTION:
+##                if MINI==True:
+##                    x+=event.rel[0]
+##                    y+=event.rel[1]
+##                    environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(x,y)
+##                    pygame.display.set_mode((size2,size2),NOFRAME)
+##                    print (x,y)
             if event.type==QUIT:
                 pygame.quit()
                 return
@@ -93,7 +134,9 @@ def main():
                     num=event.key-49
                     name=(mgr.get_usr(num))
                     launch(name)
-                    return
+                    MINI=True
+                    mini()
+                    #return
                 elif event.key==280:
                     mgr.pageup()
                     draw_text()
