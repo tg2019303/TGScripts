@@ -109,7 +109,9 @@ def main():
                             MINI=True
                             mini()
                             #return
-                        
+                elif event.button==3:
+                    pygame.quit()
+                    return
                 elif event.button==5:
                     mgr.pagedown()
                     draw_text()
