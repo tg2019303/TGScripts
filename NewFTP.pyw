@@ -79,6 +79,10 @@ def main():
         pygame.draw.rect(DIS,(9,68,134,10),(0,0,size2,size2))
         pygame.draw.rect(DIS,(13,140,235,10),(0,0,size2,size2),4)
         pygame.display.update()
+    def maxi():
+        environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(startx,starty)
+        DIS=pygame.display.set_mode((3*size,3*size),NOFRAME)
+        draw_text()
     while True:
         for event in pygame.event.get():
             if event.type==MOUSEBUTTONDOWN:
@@ -86,10 +90,10 @@ def main():
                     start_pos=event.pos
             if event.type==MOUSEBUTTONUP:
                 if event.button==1:
+                    print(event.pos)
                     if MINI==True:
-                        environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(startx,starty)
-                        DIS=pygame.display.set_mode((3*size,3*size),NOFRAME)
-                        draw_text()
+                        print(event.pos,'======')
+                        maxi()
                         MINI=False
                     else:
                         x,y=direction.get_mouse_direction(start_pos,event.pos)
@@ -145,6 +149,22 @@ def main():
                 elif event.key==281:
                     mgr.pagedown()
                     draw_text()
+            elif event.type==ACTIVEEVENT:
+                if event.gain==0 and event.state==2 and MINI==False:
+                    #print(event.state)
+                    mini()
+                    MINI=True
+                    for i in pygame.event.get(ACTIVEEVENT):#VIDEOEXPOSE):
+                        print(i)
+            #elif event.type==VIDEOEXPOSE:
+                if MINI==True and event.gain==1 and event.state==6:
+                    print('---------',event)
+                    maxi()
+                    MINI=False
+                    pygame.event.get(MOUSEBUTTONUP)
+                #el
+            #else:
+                #print(event.__dict__)
 
         pygame.time.wait(20)
 if  __name__ =='__main__':
