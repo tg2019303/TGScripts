@@ -1,12 +1,12 @@
 import pygame
 from pygame.locals import *
 from os import popen,environ
-from win32gui import FindWindow
+from win32gui import FindWindow,ShowWindow,SetWindowPos
 import direction
-#import win32gui,win32con
+import win32con
 #pygame.init()
 size=75
-size2=20
+size2=30
 startx,starty=0,500
 pas_dict={'zzx':'1234'}
 class NameManager:
@@ -38,12 +38,18 @@ def launch(name):
 def main():
     environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(startx,starty)
     DIS=pygame.display.set_mode((3*size,3*size),NOFRAME)
+    #pygame.event.set_grab(True)
     MINI=False
+    MOVING=False
     hwnd=FindWindow(None,'oh-my-ftp')
     if hwnd:
         pygame.quit()
+        SetWindowPos(hwnd,win32con.HWND_TOPMOST,startx,starty,3*size,3*size,win32con.SWP_NOSIZE)
+        #ShowWindow(hwnd,10)#win32con.SW_SHOWNORMAL
+        print('here')
         return
     pygame.display.set_caption('oh-my-ftp')
+    hwnd=FindWindow(None,'oh-my-ftp')
     #hwnd=win32gui.FindWindow(None,'oh-my-ftp')
     #a,b,c,d=win32gui.GetWindowRect(hwnd)
     #win32gui.SetWindowPos(hwnd,win32con.HWND_TOPMOST,startx,starty,3*size,3*size,win32con.SWP_NOSIZE)
@@ -79,6 +85,8 @@ def main():
         pygame.draw.rect(DIS,(9,68,134,10),(0,0,size2,size2))
         pygame.draw.rect(DIS,(13,140,235,10),(0,0,size2,size2),4)
         pygame.display.update()
+        pygame.event.get([MOUSEMOTION,MOUSEBUTTONUP])
+        return 0,5*size
     def maxi():
         environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(startx,starty)
         DIS=pygame.display.set_mode((3*size,3*size),NOFRAME)
@@ -91,11 +99,19 @@ def main():
             if event.type==MOUSEBUTTONUP:
                 if event.button==1:
                     print(event.pos)
-                    if MINI==True:
-                        print(event.pos,'======')
-                        maxi()
-                        MINI=False
+                    x0,y0=event.pos
+                    
+                    if MINI==True :
+                        if MOVING==False:
+                            print(event.pos,'======')
+                            maxi()
+                            MINI=False
+                        else:
+                            MOVING=False
+                            pygame.mouse.set_pos(0,0)
                     else:
+                        if (x0<3 or x0>size*3-3 or y0<3 or y0>size*3-3):
+                            continue
                         x,y=direction.get_mouse_direction(start_pos,event.pos)
                         if y==1:
                             mgr.pageup()
@@ -106,12 +122,12 @@ def main():
                         elif x==-1 and MINI==False:
                             MINI=True
                             #x,y=startx,starty
-                            mini()
+                            x,y=mini()
                         else:
                             name=mgr.get_usr(get_grid_num(*event.pos))
                             launch(name)
                             MINI=True
-                            mini()
+                            x,y=mini()
                             #return
                 elif event.button==3:
                     pygame.quit()
@@ -122,13 +138,19 @@ def main():
                 elif event.button==4:
                     mgr.pageup()
                     draw_text()
-##            if event.type==MOUSEMOTION:
-##                if MINI==True:
-##                    x+=event.rel[0]
-##                    y+=event.rel[1]
-##                    environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(x,y)
-##                    pygame.display.set_mode((size2,size2),NOFRAME)
-##                    print (x,y)
+            if event.type==MOUSEMOTION:
+                if MINI==True:
+                    MOVING=True
+                    x0,y0=event.pos
+                    if x0<2:x-=size2//2
+                    elif x0>size2-2:x+=size2//2
+                    if y0<2:y-=size2//2
+                    elif y0>size2-2:y+=size2//2
+                    x+=event.rel[0]
+                    y+=event.rel[1]
+                    SetWindowPos(hwnd,win32con.HWND_TOPMOST,x,y,size2,size2,win32con.SWP_NOSIZE)
+                    pygame.event.get([MOUSEMOTION,MOUSEBUTTONUP])
+                    print (event.rel,(x,y))
             if event.type==QUIT:
                 pygame.quit()
                 return
@@ -141,7 +163,7 @@ def main():
                     name=(mgr.get_usr(num))
                     launch(name)
                     MINI=True
-                    mini()
+                    x,y=mini()
                     #return
                 elif event.key==280:
                     mgr.pageup()
