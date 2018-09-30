@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 from os import popen,environ,_exit
-from win32gui import FindWindow,ShowWindow,SetWindowPos,PostMessage,GetCursorPos
+from win32gui import FindWindow,SetWindowPos,PostMessage,GetCursorPos
 import direction
 import win32con
 #pygame.init()
@@ -34,7 +34,6 @@ def get_grid_num(x,y):
 def launch(name):
     name1=name+':'+pas_dict.get(name,'123')+'@' if name else ''
     popen('start explorer ftp://%s6.163.193.243'%name1)
-    #pygame.quit()
 def find():
     hwnd=FindWindow(None,'oh-my-ftp')
     if hwnd:
@@ -42,24 +41,17 @@ def find():
         SetWindowPos(hwnd,win32con.HWND_TOPMOST,startx,starty,3*size,3*size,win32con.SWP_NOSIZE)
         PostMessage(hwnd,win32con.WM_LBUTTONDOWN,2,1)
         PostMessage(hwnd,win32con.WM_LBUTTONUP,2,1)
-        #ShowWindow(hwnd,10)#win32con.SW_SHOWNORMAL
-        print('here')
         _exit(0)
         return
 def main():
     find()
     environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(startx,starty)
     DIS=pygame.display.set_mode((3*size,3*size),NOFRAME)
-    #pygame.event.set_grab(True)
     MINI=False
     MOVING=False
     find()
     pygame.display.set_caption('oh-my-ftp')
     hwnd=FindWindow(None,'oh-my-ftp')
-    #hwnd=win32gui.FindWindow(None,'oh-my-ftp')
-    #a,b,c,d=win32gui.GetWindowRect(hwnd)
-    #win32gui.SetWindowPos(hwnd,win32con.HWND_TOPMOST,startx,starty,3*size,3*size,win32con.SWP_NOSIZE)
-    #DIS=pygame.display.set_mode((3*size,3*size),NOFRAME)
     BGSurf=pygame.surface.Surface((3*size,3*size))
     for i in range(3):
         for j in range(3):
@@ -72,7 +64,6 @@ def main():
     pygame.font.init()
     FontObj=pygame.font.SysFont('stliti',24)
     mgr=NameManager()
-##    FontObj.set_italic(True)
     def draw_text():
         DIS.blit(BGSurf,(0,0))
         for n in range(8):
@@ -85,8 +76,6 @@ def main():
         pygame.display.update()
     draw_text()
     def mini():
-        #environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(0,5*size)
-        #pygame.display.set_mode((size2,size2),NOFRAME)
         SetWindowPos(hwnd,win32con.HWND_TOPMOST,\
                      0,5*size,size2,size2,win32con.SWP_NOACTIVATE)#win32con.SWP_NOSIZE)
         pygame.draw.rect(DIS,(9,68,134,10),(0,0,size2,size2))
@@ -95,9 +84,6 @@ def main():
         pygame.event.get([MOUSEMOTION,MOUSEBUTTONUP])
         return 0,5*size
     def maxi():
-##        environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(startx,starty)
-##        DIS=pygame.display.set_mode((3*size,3*size),NOFRAME)
-        
         SetWindowPos(hwnd,win32con.HWND_TOPMOST,\
                      startx,starty,3*size,3*size,win32con.SWP_SHOWWINDOW)
         draw_text()
@@ -118,7 +104,6 @@ def main():
                             MINI=False
                         else:
                             MOVING=False
-                            #pygame.mouse.set_pos(0,0)
                     else:
                         if (x0<3 or x0>size*3-3 or y0<3 or y0>size*3-3):
                             continue
@@ -131,14 +116,12 @@ def main():
                             draw_text()
                         elif x==-1 and MINI==False:
                             MINI=True
-                            #x,y=startx,starty
                             x,y=mini()
                         else:
                             name=mgr.get_usr(get_grid_num(*event.pos))
                             launch(name)
                             MINI=True
                             x,y=mini()
-                            #return
                 elif event.button==3:
                     pygame.quit()
                     return
@@ -151,13 +134,6 @@ def main():
             if event.type==MOUSEMOTION:
                 if MINI==True and event.buttons==(1,0,0):
                     MOVING=True
-##                    x0,y0=event.pos
-##                    if x0<2:x-=size2//2
-##                    elif x0>size2-2:x+=size2//2
-##                    if y0<2:y-=size2//2
-##                    elif y0>size2-2:y+=size2//2
-##                    x+=event.rel[0]
-##                    y+=event.rel[1]
                     x0,y0=GetCursorPos()
                     SetWindowPos(hwnd,win32con.HWND_TOPMOST,x0-size2//2,y0-size2//2,size2,size2,win32con.SWP_NOSIZE)
                     pygame.event.get([MOUSEMOTION,MOUSEBUTTONUP])
@@ -175,7 +151,6 @@ def main():
                     launch(name)
                     MINI=True
                     x,y=mini()
-                    #return
                 elif event.key==280:
                     mgr.pageup()
                     draw_text()
@@ -184,20 +159,10 @@ def main():
                     draw_text()
             elif event.type==ACTIVEEVENT:
                 if event.gain==0 and event.state==2 and MINI==False:
-                    #print(event.state)
                     x,y=mini()
                     MINI=True
                     for i in pygame.event.get(ACTIVEEVENT):#VIDEOEXPOSE):
                         print(i)
-            #elif event.type==VIDEOEXPOSE:
-##                if MINI==True and event.gain==1 and event.state==6:
-##                    print('---------',event)
-##                    maxi()
-##                    MINI=False
-##                    pygame.event.get(MOUSEBUTTONUP)
-                #el
-            #else:
-                #print(event.__dict__)
 
         pygame.time.wait(20)
 if  __name__ =='__main__':
