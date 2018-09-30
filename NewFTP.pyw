@@ -4,7 +4,7 @@ from os import popen,environ,_exit
 from win32gui import FindWindow,SetWindowPos,PostMessage,GetCursorPos
 import direction
 import win32con
-#pygame.init()
+
 size=75
 size2=30
 startx,starty=0,500
@@ -160,8 +160,7 @@ def main():
                 if event.gain==0 and event.state==2 and MINI==False:
                     mini()
                     MINI=True
-                    for i in pygame.event.get(ACTIVEEVENT):#VIDEOEXPOSE):
-                        print(i)
+                    pygame.event.get(ACTIVEEVENT)
 
         pygame.time.wait(20)
 if  __name__ =='__main__':
