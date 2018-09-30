@@ -29,7 +29,7 @@ class NameManager:
     def pageup(self):
         self.page=max(0,self.page-1)
 def get_grid_num(x,y):
-    print(x,y)
+    print('redirecting',(x,y))
     return((y//size)*3+x//size)
 def launch(name):
     name1=name+':'+pas_dict.get(name,'123')+'@' if name else ''
@@ -94,12 +94,11 @@ def main():
                     start_pos=event.pos
             if event.type==MOUSEBUTTONUP:
                 if event.button==1:
-                    print(event.pos)
                     x0,y0=event.pos
                     
                     if MINI==True :
                         if MOVING==False:
-                            print(event.pos,'======')
+                            print('maximizing',event.pos)
                             maxi()
                             MINI=False
                         else:
