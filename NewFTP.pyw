@@ -82,7 +82,7 @@ def main():
         pygame.draw.rect(DIS,(13,140,235,10),(0,0,size2,size2),4)
         pygame.display.update()
         pygame.event.get([MOUSEMOTION,MOUSEBUTTONUP])
-        return 0,5*size
+        return
     def maxi():
         SetWindowPos(hwnd,win32con.HWND_TOPMOST,\
                      startx,starty,3*size,3*size,win32con.SWP_SHOWWINDOW)
@@ -116,12 +116,12 @@ def main():
                             draw_text()
                         elif x==-1 and MINI==False:
                             MINI=True
-                            x,y=mini()
+                            mini()
                         else:
                             name=mgr.get_usr(get_grid_num(*event.pos))
                             launch(name)
                             MINI=True
-                            x,y=mini()
+                            mini()
                 elif event.button==3:
                     pygame.quit()
                     return
@@ -137,7 +137,6 @@ def main():
                     x0,y0=GetCursorPos()
                     SetWindowPos(hwnd,win32con.HWND_TOPMOST,x0-size2//2,y0-size2//2,size2,size2,win32con.SWP_NOSIZE)
                     pygame.event.get([MOUSEMOTION,MOUSEBUTTONUP])
-                    print (event.rel,(x,y))
             if event.type==QUIT:
                 pygame.quit()
                 return
@@ -150,7 +149,7 @@ def main():
                     name=(mgr.get_usr(num))
                     launch(name)
                     MINI=True
-                    x,y=mini()
+                    mini()
                 elif event.key==280:
                     mgr.pageup()
                     draw_text()
@@ -159,7 +158,7 @@ def main():
                     draw_text()
             elif event.type==ACTIVEEVENT:
                 if event.gain==0 and event.state==2 and MINI==False:
-                    x,y=mini()
+                    mini()
                     MINI=True
                     for i in pygame.event.get(ACTIVEEVENT):#VIDEOEXPOSE):
                         print(i)
