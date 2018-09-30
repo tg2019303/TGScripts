@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 from os import popen,environ,_exit
-from win32gui import FindWindow,ShowWindow,SetWindowPos,PostMessage
+from win32gui import FindWindow,ShowWindow,SetWindowPos,PostMessage,GetCursorPos
 import direction
 import win32con
 #pygame.init()
@@ -151,14 +151,15 @@ def main():
             if event.type==MOUSEMOTION:
                 if MINI==True and event.buttons==(1,0,0):
                     MOVING=True
-                    x0,y0=event.pos
-                    if x0<2:x-=size2//2
-                    elif x0>size2-2:x+=size2//2
-                    if y0<2:y-=size2//2
-                    elif y0>size2-2:y+=size2//2
-                    x+=event.rel[0]
-                    y+=event.rel[1]
-                    SetWindowPos(hwnd,win32con.HWND_TOPMOST,x,y,size2,size2,win32con.SWP_NOSIZE)
+##                    x0,y0=event.pos
+##                    if x0<2:x-=size2//2
+##                    elif x0>size2-2:x+=size2//2
+##                    if y0<2:y-=size2//2
+##                    elif y0>size2-2:y+=size2//2
+##                    x+=event.rel[0]
+##                    y+=event.rel[1]
+                    x0,y0=GetCursorPos()
+                    SetWindowPos(hwnd,win32con.HWND_TOPMOST,x0-size2//2,y0-size2//2,size2,size2,win32con.SWP_NOSIZE)
                     pygame.event.get([MOUSEMOTION,MOUSEBUTTONUP])
                     print (event.rel,(x,y))
             if event.type==QUIT:
@@ -182,18 +183,18 @@ def main():
                     mgr.pagedown()
                     draw_text()
             elif event.type==ACTIVEEVENT:
-##                if event.gain==0 and event.state==2 and MINI==False:
-##                    #print(event.state)
-##                    x,y=mini()
-##                    MINI=True
-##                    for i in pygame.event.get(ACTIVEEVENT):#VIDEOEXPOSE):
-##                        print(i)
+                if event.gain==0 and event.state==2 and MINI==False:
+                    #print(event.state)
+                    x,y=mini()
+                    MINI=True
+                    for i in pygame.event.get(ACTIVEEVENT):#VIDEOEXPOSE):
+                        print(i)
             #elif event.type==VIDEOEXPOSE:
-                if MINI==True and event.gain==1 and event.state==6:
-                    print('---------',event)
-                    maxi()
-                    MINI=False
-                    pygame.event.get(MOUSEBUTTONUP)
+##                if MINI==True and event.gain==1 and event.state==6:
+##                    print('---------',event)
+##                    maxi()
+##                    MINI=False
+##                    pygame.event.get(MOUSEBUTTONUP)
                 #el
             #else:
                 #print(event.__dict__)
