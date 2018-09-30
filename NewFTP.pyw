@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
-from os import popen,environ
-from win32gui import FindWindow,ShowWindow,SetWindowPos
+from os import popen,environ,_exit
+from win32gui import FindWindow,ShowWindow,SetWindowPos,PostMessage
 import direction
 import win32con
 #pygame.init()
@@ -35,19 +35,25 @@ def launch(name):
     name1=name+':'+pas_dict.get(name,'123')+'@' if name else ''
     popen('start explorer ftp://%s6.163.193.243'%name1)
     #pygame.quit()
+def find():
+    hwnd=FindWindow(None,'oh-my-ftp')
+    if hwnd:
+        pygame.quit()
+        SetWindowPos(hwnd,win32con.HWND_TOPMOST,startx,starty,3*size,3*size,win32con.SWP_NOSIZE)
+        PostMessage(hwnd,win32con.WM_LBUTTONDOWN,2,1)
+        PostMessage(hwnd,win32con.WM_LBUTTONUP,2,1)
+        #ShowWindow(hwnd,10)#win32con.SW_SHOWNORMAL
+        print('here')
+        _exit(0)
+        return
 def main():
+    find()
     environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(startx,starty)
     DIS=pygame.display.set_mode((3*size,3*size),NOFRAME)
     #pygame.event.set_grab(True)
     MINI=False
     MOVING=False
-    hwnd=FindWindow(None,'oh-my-ftp')
-    if hwnd:
-        pygame.quit()
-        SetWindowPos(hwnd,win32con.HWND_TOPMOST,startx,starty,3*size,3*size,win32con.SWP_NOSIZE)
-        #ShowWindow(hwnd,10)#win32con.SW_SHOWNORMAL
-        print('here')
-        return
+    find()
     pygame.display.set_caption('oh-my-ftp')
     hwnd=FindWindow(None,'oh-my-ftp')
     #hwnd=win32gui.FindWindow(None,'oh-my-ftp')
@@ -79,17 +85,21 @@ def main():
         pygame.display.update()
     draw_text()
     def mini():
-        environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(0,5*size)
-        pygame.display.set_mode((size2,size2),NOFRAME)
-        
+        #environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(0,5*size)
+        #pygame.display.set_mode((size2,size2),NOFRAME)
+        SetWindowPos(hwnd,win32con.HWND_TOPMOST,\
+                     0,5*size,size2,size2,win32con.SWP_NOACTIVATE)#win32con.SWP_NOSIZE)
         pygame.draw.rect(DIS,(9,68,134,10),(0,0,size2,size2))
         pygame.draw.rect(DIS,(13,140,235,10),(0,0,size2,size2),4)
         pygame.display.update()
         pygame.event.get([MOUSEMOTION,MOUSEBUTTONUP])
         return 0,5*size
     def maxi():
-        environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(startx,starty)
-        DIS=pygame.display.set_mode((3*size,3*size),NOFRAME)
+##        environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(startx,starty)
+##        DIS=pygame.display.set_mode((3*size,3*size),NOFRAME)
+        
+        SetWindowPos(hwnd,win32con.HWND_TOPMOST,\
+                     startx,starty,3*size,3*size,win32con.SWP_SHOWWINDOW)
         draw_text()
     while True:
         for event in pygame.event.get():
@@ -108,7 +118,7 @@ def main():
                             MINI=False
                         else:
                             MOVING=False
-                            pygame.mouse.set_pos(0,0)
+                            #pygame.mouse.set_pos(0,0)
                     else:
                         if (x0<3 or x0>size*3-3 or y0<3 or y0>size*3-3):
                             continue
@@ -139,7 +149,7 @@ def main():
                     mgr.pageup()
                     draw_text()
             if event.type==MOUSEMOTION:
-                if MINI==True:
+                if MINI==True and event.buttons==(1,0,0):
                     MOVING=True
                     x0,y0=event.pos
                     if x0<2:x-=size2//2
@@ -172,12 +182,12 @@ def main():
                     mgr.pagedown()
                     draw_text()
             elif event.type==ACTIVEEVENT:
-                if event.gain==0 and event.state==2 and MINI==False:
-                    #print(event.state)
-                    mini()
-                    MINI=True
-                    for i in pygame.event.get(ACTIVEEVENT):#VIDEOEXPOSE):
-                        print(i)
+##                if event.gain==0 and event.state==2 and MINI==False:
+##                    #print(event.state)
+##                    x,y=mini()
+##                    MINI=True
+##                    for i in pygame.event.get(ACTIVEEVENT):#VIDEOEXPOSE):
+##                        print(i)
             #elif event.type==VIDEOEXPOSE:
                 if MINI==True and event.gain==1 and event.state==6:
                     print('---------',event)
