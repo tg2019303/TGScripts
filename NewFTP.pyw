@@ -8,10 +8,11 @@ import win32con
 size = 75
 size2 = 30
 startx, starty = 0, 500
-pas_dict={'zzx':'1234'}
+
 class NameManager:
     usrs=['zm','cjun','xmh','zxs','zjx','ysh','zjp','cj','zzx']
     names=['语文','数学','英语','物理','化学','地理杨','地理周','历史','钟志兴']
+    pas_dict={'zzx':'1234'}
     page = 0
     maxpage = len(usrs)//8
     def get_usr(self, i):
@@ -28,12 +29,15 @@ class NameManager:
         self.page = min(self.maxpage, self.page+1)
     def pageup(self):
         self.page = max(0, self.page-1)
+    def launch(self, num):
+        name=self.get_usr(num)
+        name1 = name+':'+self.pas_dict.get(name,'123')+'@' if name else ''
+        print (name1)
+        popen('start explorer ftp://%s6.163.193.243'%name1)
 def get_grid_num(x, y):
     print('redirecting',(x, y))
     return((y//size)*3+x//size)
-def launch(name):
-    name1 = name+':'+pas_dict.get(name,'123')+'@' if name else ''
-    popen('start explorer ftp://%s6.163.193.243'%name1)
+
 def find():
     hwnd = FindWindow(None,'oh-my-ftp')
     if hwnd:
@@ -101,7 +105,6 @@ def main():
             if event.type == MOUSEBUTTONUP:
                 if event.button == 1:
                     x0, y0 = event.pos
-                    
                     if MINI == True :
                         if MOVING == False:
                             print('maximizing', event.pos)
@@ -124,8 +127,7 @@ def main():
                             MINI = True
                             mini()
                         else:
-                            name = mgr.get_usr(get_grid_num(*event.pos))
-                            launch(name)
+                            mgr.launch(get_grid_num(*event.pos))
                             MINI = True
                             mini()
                 elif event.button == 3:
@@ -153,9 +155,7 @@ def main():
                     pygame.quit()
                     return
                 elif 49 <= event.key <= 57:
-                    num = event.key-49
-                    name = mgr.get_usr(num)
-                    launch(name)
+                    mgr.launch(event.key-49)
                     MINI = True
                     mini()
                 elif event.key == 280:
@@ -168,7 +168,6 @@ def main():
                 if event.gain == 0 and event.state == 2 and MINI == False:
                     mini()
                     MINI = True
-                    #pygame.event.get(ACTIVEEVENT)
 
         pygame.time.wait(20)
 if  __name__  == '__main__':
