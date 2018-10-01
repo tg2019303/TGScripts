@@ -110,9 +110,10 @@ def main():
                         else:
                             MOVING = False
                     else:
-                        if (x0<3 or x0>size*3-3 or y0<3 or y0>size*3-3):
+                        if (x0 < 3 or x0 > size*3-3 or y0 < 3 or y0 > size*3-3):
                             continue
-                        x, y = direction.get_mouse_direction(start_pos, event.pos)
+                        x, y = direction.get_mouse_direction(
+                            start_pos, event.pos)
                         if y == 1:
                             mgr.pageup()
                             draw_text()
@@ -140,7 +141,9 @@ def main():
                 if MINI == True and event.buttons == (1, 0, 0):
                     MOVING = True
                     x0, y0 = GetCursorPos()
-                    SetWindowPos(hwnd, win32con.HWND_TOPMOST, x0-size2//2, y0-size2//2, size2, size2, win32con.SWP_NOSIZE)
+                    SetWindowPos(hwnd, win32con.HWND_TOPMOST,
+                                 x0-size2//2, y0-size2//2, size2, size2,
+                                 win32con.SWP_NOSIZE)
                     pygame.event.get([MOUSEMOTION, MOUSEBUTTONUP])
             if event.type == QUIT:
                 pygame.quit()
