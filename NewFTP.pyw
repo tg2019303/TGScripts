@@ -54,10 +54,9 @@ def main():
     pygame.display.set_caption('oh-my-ftp')
     hwnd = FindWindow(None,'oh-my-ftp')
     BGSurf = pygame.surface.Surface((3*size, 3*size))
+    BGSurf.fill((9, 68, 134, 10))
     for i in range(3):
         for j in range(3):
-            pygame.draw.rect(BGSurf,(9, 68, 134, 10),
-                             (i*size, j*size, size, size))
             pygame.draw.rect(BGSurf,(13, 140, 235, 10),
                              (i*size, j*size, size, size), 10)
     BG = pygame.image.load('bg.jpg')
@@ -81,7 +80,7 @@ def main():
     def mini():
         SetWindowPos(hwnd, win32con.HWND_TOPMOST,\
                      0, 5*size, size2, size2, win32con.SWP_NOACTIVATE)#win32con.SWP_NOSIZE)
-        pygame.draw.rect(DIS,(9, 68, 134, 10),(0, 0, size2, size2))
+        DIS.fill((9, 68, 134, 10))
         pygame.draw.rect(DIS,(13, 140, 235, 10),(0, 0, size2, size2), 4)
         pygame.display.update()
         pygame.event.get([MOUSEMOTION, MOUSEBUTTONUP])
