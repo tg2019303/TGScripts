@@ -84,8 +84,11 @@ def main():
         pygame.event.get([MOUSEMOTION,MOUSEBUTTONUP])
         return
     def maxi():
-        SetWindowPos(hwnd,win32con.HWND_TOPMOST,\
-                     startx,starty,3*size,3*size,win32con.SWP_SHOWWINDOW)
+        environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(startx,starty)
+        DIS=pygame.display.set_mode((3*size,3*size),NOFRAME)
+        mgr.page=0
+##        SetWindowPos(hwnd,win32con.HWND_TOPMOST,\
+##                     startx,starty,3*size,3*size,win32con.SWP_SHOWWINDOW)
         draw_text()
     while True:
         for event in pygame.event.get():
