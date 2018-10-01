@@ -168,7 +168,7 @@ def main():
                 if event.gain == 0 and event.state == 2 and MINI == False:
                     mini()
                     MINI = True
-                    pygame.event.get(ACTIVEEVENT)
+                    #pygame.event.get(ACTIVEEVENT)
 
         pygame.time.wait(20)
 if  __name__  == '__main__':
