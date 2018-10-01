@@ -39,8 +39,8 @@ def find():
     if hwnd:
         pygame.quit()
         SetWindowPos(hwnd,win32con.HWND_TOPMOST,startx,starty,3*size,3*size,win32con.SWP_NOSIZE)
-        PostMessage(hwnd,win32con.WM_LBUTTONDOWN,2,1)
-        PostMessage(hwnd,win32con.WM_LBUTTONUP,2,1)
+        PostMessage(hwnd,win32con.WM_LBUTTONDOWN,0,(1<<16)+1)
+        PostMessage(hwnd,win32con.WM_LBUTTONUP,0,(1<<16)+1)
         _exit(0)
         return
 def main():
