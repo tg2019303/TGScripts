@@ -45,8 +45,6 @@ A useful tool to manage the desktop files. when you select the file and drag the
 Lauch the `jupyter notebook` and hide the console using `win32gui` if it is not running, or show the console window if running.
 ## website.txt
 Store some useful websites ever encountered.
-## num_guess.py
-A number guessing game. When a number is in the randomly generated number called `cnum`, but isn't in the right place, it add up as B. If is in the right place, they add up as A. Your goal is to reach 4A0B, which means you get the totally correct number.
 ## net.py
 A simple script made by sjl to switch the net mode in the command line.
 ## JupyterNotes/
