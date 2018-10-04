@@ -164,6 +164,12 @@ def main():
                 elif event.key == 281:
                     mgr.pagedown()
                     draw_text()
+                elif event.key == 276:
+                    mini()
+                    MINI = True
+                elif event.key == 13:
+                    maxi()
+                    MINI = False
             elif event.type == ACTIVEEVENT:
                 if event.gain == 0 and event.state == 2 and MINI == False:
                     mini()
