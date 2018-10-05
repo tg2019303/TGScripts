@@ -49,6 +49,7 @@ def find():
         _exit(0)
         return
 def main():
+    global MINI
     find()
     environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(startx, starty)
     DIS = pygame.display.set_mode((3*size, 3*size), NOFRAME)
@@ -82,21 +83,27 @@ def main():
         pygame.display.update()
     draw_text()
     def mini():
-        SetWindowPos(hwnd, win32con.HWND_TOPMOST,\
-                     0, 5*size, size2, size2, win32con.SWP_NOACTIVATE)#win32con.SWP_NOSIZE)
-        DIS.fill((9, 68, 134, 10))
-        pygame.draw.rect(DIS,(13, 140, 235, 10),(0, 0, size2, size2), 4)
-        pygame.display.update()
-        pygame.event.get([MOUSEMOTION, MOUSEBUTTONUP])
-        return
+        global MINI
+        if MINI == False:
+            SetWindowPos(hwnd, win32con.HWND_DESKTOP,\
+                         0, 5*size, size2, size2, win32con.SWP_NOACTIVATE)#win32con.SWP_NOSIZE)
+            DIS.fill((9, 68, 134, 10))
+            pygame.draw.rect(DIS,(13, 140, 235, 10),(0, 0, size2, size2), 4)
+            pygame.display.update()
+            pygame.event.get([MOUSEMOTION, MOUSEBUTTONUP])
+        MINI = True
     def maxi():
-        environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(startx, starty)
-        DIS = pygame.display.set_mode((3*size, 3*size), NOFRAME)
-        mgr.page = 0
-        #it is quite strange that SetWindowPos should be added
-        SetWindowPos(hwnd, win32con.HWND_TOPMOST,\
-                     startx, starty, 3*size, 3*size, win32con.SWP_SHOWWINDOW)
-        draw_text()
+        global MINI
+        if MINI == True:
+##            environ['SDL_VIDEO_WINDOW_POS']='%d,%d'%(startx, starty)
+##            DIS = pygame.display.set_mode((3*size, 3*size), NOFRAME)
+            mgr.page = 0
+            #it is quite strange that SetWindowPos should be added
+            SetWindowPos(hwnd, win32con.HWND_DESKTOP,\
+                         startx, starty, 3*size, 3*size, win32con.SWP_SHOWWINDOW)
+            SetForegroundWindow(hwnd)
+            draw_text()
+        MINI = False
     while True:
         for event in pygame.event.get():
             if event.type == MOUSEBUTTONDOWN:
@@ -109,7 +116,6 @@ def main():
                         if MOVING == False:
                             print('maximizing', event.pos)
                             maxi()
-                            MINI = False
                         else:
                             MOVING = False
                     else:
@@ -123,12 +129,10 @@ def main():
                         elif y == -1:
                             mgr.pagedown()
                             draw_text()
-                        elif x == -1 and MINI == False:
-                            MINI = True
+                        elif x == -1:
                             mini()
                         else:
                             mgr.launch(get_grid_num(*event.pos))
-                            MINI = True
                             mini()
                 elif event.button == 3:
                     pygame.quit()
@@ -156,7 +160,6 @@ def main():
                     return
                 elif 49 <= event.key <= 57:
                     mgr.launch(event.key-49)
-                    MINI = True
                     mini()
                 elif event.key == 280:
                     mgr.pageup()
@@ -166,14 +169,11 @@ def main():
                     draw_text()
                 elif event.key == 276:
                     mini()
-                    MINI = True
                 elif event.key == 13:
                     maxi()
-                    MINI = False
             elif event.type == ACTIVEEVENT:
-                if event.gain == 0 and event.state == 2 and MINI == False:
+                if event.gain == 0 and event.state == 2:
                     mini()
-                    MINI = True
 
         pygame.time.wait(20)
 if  __name__  == '__main__':
