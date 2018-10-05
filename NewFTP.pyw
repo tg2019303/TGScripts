@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 from os import popen, environ, _exit
-from win32gui import FindWindow, SetWindowPos, PostMessage, GetCursorPos
+from win32gui import FindWindow, SetWindowPos, PostMessage, GetCursorPos, SetForegroundWindow
 import direction
 import win32con
 
@@ -42,7 +42,7 @@ def find():
     hwnd = FindWindow(None,'oh-my-ftp')
     if hwnd:
         pygame.quit()
-        SetWindowPos(hwnd, win32con.HWND_TOPMOST, startx, starty,
+        SetWindowPos(hwnd, win32con.HWND_DESKTOP, startx, starty,
                      3*size, 3*size, win32con.SWP_NOSIZE)
         PostMessage(hwnd, win32con.WM_LBUTTONDOWN, 0,(1<<16)+1)
         PostMessage(hwnd, win32con.WM_LBUTTONUP, 0,(1<<16)+1)
@@ -143,7 +143,7 @@ def main():
                 if MINI == True and event.buttons == (1, 0, 0):
                     MOVING = True
                     x0, y0 = GetCursorPos()
-                    SetWindowPos(hwnd, win32con.HWND_TOPMOST,
+                    SetWindowPos(hwnd, win32con.HWND_DESKTOP,
                                  x0-size2//2, y0-size2//2, size2, size2,
                                  win32con.SWP_NOSIZE)
                     pygame.event.get([MOUSEMOTION, MOUSEBUTTONUP])
