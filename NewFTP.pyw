@@ -10,8 +10,8 @@ size2 = 30
 startx, starty = 0, 500
 
 class NameManager:
-    usrs=['zm','cjun','xmh','zxs','zjx','ysh','zjp','cj','zzx']
-    names=['语文','数学','英语','物理','化学','地理杨','地理周','历史','钟志兴']
+    usrs=('zm','cjun','xmh','zxs','zjx','ysh','zjp','cj','zzx')
+    names=('语文','数学','英语','物理','化学','地理杨','地理周','历史','钟志兴')
     pas_dict={'zzx':'1234'}
     page = 0
     maxpage = len(usrs)//8
