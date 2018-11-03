@@ -1,6 +1,7 @@
 import os
 task_list=['QQMusic.exe','EasiNote.exe','GeePlayer.exe',\
            'cmd.exe',\
+           'PotPlayerMini64.exe /t',\
            'py.exe /t',\
            'pyw.exe /t',\
            ]
